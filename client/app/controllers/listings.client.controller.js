@@ -79,6 +79,31 @@ angular.module('listings').controller('ListingsController', ['$scope', '$locatio
         successfully finished, navigate back to the 'listing.list' state using $state.go(). If an error 
         occurs, pass it to $scope.error. 
        */
+
+        /*
+          Check that the form is valid. (https://github.com/paulyoder/angular-bootstrap-show-errors)
+         */
+        if (!isValid) {
+            $scope.$broadcast('show-errors-check-validity', 'articleForm');
+
+            return false;
+        }
+
+        /* Get the listing's id */
+        var id = $stateParams.listingId;
+
+        /* Get the current listing object */
+        var listing = $scope.listing;
+
+        /* Update the article using the Listings factory */
+        Listings.update(id, listing)
+            .then(function(response) {
+                //if the object is successfully saved redirect back to the list page
+                $state.go('listings.list', { successMessage: 'Listing successfully updated!' });
+            }, function(error) {
+                //otherwise display the error
+                $scope.error = 'Unable to update listing!\n' + error;
+            });
     };
 
     $scope.remove = function() {

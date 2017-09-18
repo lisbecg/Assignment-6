@@ -14,6 +14,20 @@ angular.module('listings').controller('ListingsController', ['$scope', '$locatio
       });
     };
 
+    $scope.findMaps = function () {
+      /* set loader */
+      $scope.loading = true;
+
+      /* Get all the listings, then bind it to the scope */
+      Listings.getAll().then(function(response) {
+        $scope.loading = false; //remove loader
+        $scope.listings = response.data;
+      }, function(error) {
+        $scope.loading = false;
+        $scope.error = 'Unable to retrieve listings!\n' + error;
+      });
+    }
+
     $scope.findOne = function() {
       debugger;
       $scope.loading = true;

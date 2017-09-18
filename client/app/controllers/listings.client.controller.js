@@ -98,7 +98,7 @@ angular.module('listings').controller('ListingsController', ['$scope', '$locatio
         /* Update the article using the Listings factory */
         Listings.update(id, listing)
             .then(function(response) {
-                //if the object is successfully saved redirect back to the list page
+                //if the object is successfully updated redirect back to the list page
                 $state.go('listings.list', { successMessage: 'Listing successfully updated!' });
             }, function(error) {
                 //otherwise display the error
@@ -111,6 +111,18 @@ angular.module('listings').controller('ListingsController', ['$scope', '$locatio
         Implement the remove function. If the removal is successful, navigate back to 'listing.list'. Otherwise, 
         display the error. 
        */
+        /* Get the listing's id */
+        var id = $stateParams.listingId;
+
+        /* Update the article using the Listings factory */
+        Listings.delete(id)
+            .then(function(response) {
+                //if the object is successfully removed redirect back to the list page
+                $state.go('listings.list', { successMessage: 'Listing successfully removed!' });
+            }, function(error) {
+                //otherwise display the error
+                $scope.error = 'Unable to remove listing!\n' + error;
+            });
     };
 
     /* Bind the success message to the scope if it exists as part of the current state */

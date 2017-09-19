@@ -22,11 +22,36 @@ angular.module('listings').controller('ListingsController', ['$scope', '$locatio
       Listings.getAll().then(function(response) {
         $scope.loading = false; //remove loader
         $scope.listings = response.data;
+          
+        var markers = [];
+        for(var i in $scope.listings){
+            if($scope.listings[i].coordinates != null){
+                markers.push(createMarker(i, $scope.listings[i]));
+            }
+        }
+        $scope.randomMarkers = markers;
       }, function(error) {
         $scope.loading = false;
         $scope.error = 'Unable to retrieve listings!\n' + error;
       });
     }
+
+      var createMarker = function(listingKey, listing, idKey){
+          if (idKey == null) {
+              idKey = "id";
+          }
+
+          var resultMarker = {
+              code: listing.code,
+              name: listing.name,
+              address: listing.address,
+              latitude: listing["coordinates"]["latitude"],
+              longitude: listing["coordinates"]["longitude"]
+          };
+
+          resultMarker[idKey] = listingKey;
+          return resultMarker;
+      }
 
     $scope.findOne = function() {
       debugger;
@@ -151,6 +176,10 @@ angular.module('listings').controller('ListingsController', ['$scope', '$locatio
         longitude: -82.3410518
       }, 
       zoom: 14
+    }
+
+    $scope.options = {
+        scrollwheel: false
     }
   }
 ]);

@@ -22,7 +22,7 @@ angular.module('listings').controller('ListingsController', ['$scope', '$locatio
       Listings.getAll().then(function(response) {
         $scope.loading = false; //remove loader
         $scope.listings = response.data;
-          
+
         var markers = [];
         for(var i in $scope.listings){
             if($scope.listings[i].coordinates != null){
